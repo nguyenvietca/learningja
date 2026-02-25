@@ -20,22 +20,32 @@ function resetFlashcardPool() {
     unusedIndexes = [...Array(flashcards.length).keys()];
 }
 
-function nextCard() {
+function nextCard(pre) {
     if (unusedIndexes.length === 0) {
         resetFlashcardPool();
     }
-
-    const randomPos = Math.floor(Math.random() * unusedIndexes.length);
-    currentIndex = unusedIndexes.splice(randomPos, 1)[0];
-
-    renderCard();
+	//const randomPos = Math.floor(Math.random() * unusedIndexes.length);
+    //currentIndex = unusedIndexes.splice(randomPos, 1)[0];
+	if(currentIndex == quizEnd||currentIndex < quizStart){
+			currentIndex = 0;
+	}
+	
+	if(pre == 1){
+			currentIndex--;
+	}else if(pre == 0){
+		currentIndex++;	
+	}
+	if(currentIndex == quizEnd||currentIndex < quizStart){
+			currentIndex = 0;
+	}
+	renderCard(pre);
     updateProgress();
 }
 
 function renderCard() {
-	let idx = Math.floor(Math.random() * (quizEnd - quizStart + 1)) + quizStart;
-	const card =flashcards[idx];
-    //const card = flashcards[currentIndex];
+	//let idx = Math.floor(Math.random() * (quizEnd - quizStart + 1)) + quizStart;
+	//const card =flashcards[idx];
+    const card = flashcards[currentIndex];
     document.getElementById("flashcard").innerText = card.word;
     document.getElementById("kana").innerText = card.kana;
     document.getElementById("meaning").innerText = " (" + card.meaning + ")";
@@ -46,9 +56,30 @@ function renderCard() {
 	document.getElementById("example").innerHTML = card.example+ "( "+card.exMeaning+" )";
 	
     //document.getElementById("counter").innerText = (flashcards.length - unusedIndexes.length) + " / " + flashcards.length;
-    document.getElementById("counter").innerText = idx + " / " + quizEnd;
-	
+    //document.getElementById("counter").innerText = idx + " / " + quizEnd;
+	var idx = currentIndex+1;
+    document.getElementById("counter").innerText = idx + " / " + quizEnd;	
 }
+
+// =========================
+// PROGRESS BAR
+// =========================
+const progressBar = document.createElement("div");
+progressBar.classList.add("progress-bar");
+
+const progressFill = document.createElement("div");
+progressFill.classList.add("progress-fill");
+
+progressBar.appendChild(progressFill);
+document.getElementById("progressBar").appendChild(progressBar);
+
+function updateProgress() {
+    //const percent = ((flashcards.length - unusedIndexes.length) / flashcards.length) * 100;
+    //const percent = ((quizEnd - unusedIndexes.length) / quizEnd) * 100;
+	const percent = ((currentIndex + 1 -quizEnd) / quizEnd) * 100 + 100;
+    progressFill.style.width = percent + "%";
+}
+
 function toggleMeaning() {
     const meaning = document.getElementById("meaning");
 	const example = document.getElementById("example");
@@ -65,31 +96,7 @@ function toggleMeaning() {
     }
 }
 
-// =========================
-// PROGRESS BAR
-// =========================
-const progressBar = document.createElement("div");
-//progressBar.style.height = "10px";
-//progressBar.style.background = "#ddd";
-//progressBar.style.borderRadius = "10px";
-//progressBar.style.marginTop = "10px";
-progressBar.classList.add("progress-bar");
 
-const progressFill = document.createElement("div");
-//progressFill.style.height = "10px";
-//progressFill.style.width = "0%";
-//progressFill.style.background = "#28a745";
-//progressFill.style.borderRadius = "10px";
-progressFill.classList.add("progress-fill");
-
-progressBar.appendChild(progressFill);
-document.getElementById("progressBar").appendChild(progressBar);
-
-function updateProgress() {
-    const percent = ((flashcards.length - unusedIndexes.length) / flashcards.length) * 100;
-    //const percent = ((quizEnd - unusedIndexes.length) / quizEnd) * 100;
-    progressFill.style.width = percent + "%";
-}
 
 // =========================
 // QUIZ + LOCAL STORAGE
@@ -272,6 +279,7 @@ function generateRangeOptions() {
         flashSelect.appendChild(opt3);
     }
 
+	//Quiz
     quizSelect.onchange = function () {
         const [s, e] = this.value.split("-");
         //quizStart = parseInt(s);
@@ -279,23 +287,30 @@ function generateRangeOptions() {
 		updateIndex(parseInt(s),parseInt(e));
     };
 
+	//Thi thử
     examSelect.onchange = function () {
         const [s, e] = this.value.split("-");
 		updateIndex(parseInt(s),parseInt(e));
     };
-	
+	//Flashcard
 	flashSelect.onchange = function () {
         const [s, e] = this.value.split("-");
 		updateIndex(parseInt(s),parseInt(e));
     };
 }
-function updateIndex(quizStart,quizEnd) {
-	if(quizEnd > flashcards.length){
+function updateIndex(start,end) {
+	if(end > flashcards.length){
 		quizEnd = flashcards.length;
 	}
-	if(quizStart > flashcards.length){
+	if(start > flashcards.length){
 		quizStart = 0;
 	}
+	quizEnd = end;
+	quizStart = start;
+	currentIndex = start;
+	nextCard();
+	nextQuiz();
+	startExam();
 }
 
 
