@@ -53,6 +53,18 @@ button {
 .wrong-answer{
 	border: 1px solid red;
 }
+.progress-bar{
+	height: 10px;
+	background: #ddd;
+	borderRadius: 10px;
+	marginTop: 10px;
+}
+.progress-fill{
+	height: 10px;
+	width: 0%;
+	background: #28a745;
+	borderRadius: 10px;
+}
 </style>
 </head>
 <body>
@@ -83,6 +95,7 @@ button {
 		<div>
 			<span class="small" id="kana"></span>
 			<span class="small" id="meaning" style="display:none;"></span>
+			<div class="small" id="example"></div>
 		</div>
 		<button class="primary" id="toggleBtn" onclick="toggleMeaning()">Hiện nghĩa</button>
 		<button class="success" onclick="nextCard()">Từ tiếp theo</button>
@@ -126,6 +139,7 @@ button {
 
 </div>
 <script src="shinkanzenData.js"></script>
+<script src="somatomeData.js"></script>
 <script src="app.js"></script>
 
 
