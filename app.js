@@ -13,21 +13,46 @@ let flashcards = flashcardsShinkanzen;
 // =========================
 let unusedIndexes = [];
 let currentIndex = 0;
+
+// Range riêng cho từng section
+let flashStart = 0;
+let flashEnd = Math.min(20, flashcards.length - 1);
 let quizStart = 0;
 let quizEnd = Math.min(20, flashcards.length - 1);
+let examStart = 0;
+let examEnd = Math.min(20, flashcards.length - 1);
 
 function resetFlashcardPool() {
     unusedIndexes = [...Array(flashcards.length).keys()];
+}
+
+// =========================
+// PHÁT ÂM TIẾNG NHẬT
+// =========================
+function speakJapanese(text) {
+    const toggle = document.getElementById('autoSpeakToggle');
+    if (!window.speechSynthesis || (toggle && !toggle.checked)) {
+        return;
+    }
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'ja-JP';
+    utter.rate = 0.8;
+
+    // Ưu tiên giọng ja-JP nếu có
+    const voices = window.speechSynthesis.getVoices();
+    const jaVoice = voices.find(v => v.lang === 'ja-JP');
+    if (jaVoice) utter.voice = jaVoice;
+
+    window.speechSynthesis.speak(utter);
 }
 
 function nextCard(pre) {
     if (unusedIndexes.length === 0) {
         resetFlashcardPool();
     }
-    //const randomPos = Math.floor(Math.random() * unusedIndexes.length);
-    //currentIndex = unusedIndexes.splice(randomPos, 1)[0];
-    if (currentIndex == quizEnd || currentIndex < quizStart) {
-        currentIndex = 0;
+    if (currentIndex >= flashEnd || currentIndex < flashStart) {
+        currentIndex = flashStart;
     }
 
     if (pre == 1) {
@@ -35,14 +60,14 @@ function nextCard(pre) {
     } else if (pre == 0) {
         currentIndex++;
     }
-    if (currentIndex == quizEnd || currentIndex < quizStart) {
-        currentIndex = 0;
+    if (currentIndex >= flashEnd || currentIndex < flashStart) {
+        currentIndex = flashStart;
     }
     renderCard(pre);
     updateProgress();
 }
 
-function renderCard() {
+function renderCard(pre) {
     //let idx = Math.floor(Math.random() * (quizEnd - quizStart + 1)) + quizStart;
     //const card =flashcards[idx];
     const card = flashcards[currentIndex];
@@ -56,9 +81,22 @@ function renderCard() {
     document.getElementById("example").innerHTML = card.example + "( " + card.exMeaning + " )";
 
     //document.getElementById("counter").innerText = (flashcards.length - unusedIndexes.length) + " / " + flashcards.length;
-    //document.getElementById("counter").innerText = idx + " / " + quizEnd;
+
+
     var idx = currentIndex + 1;
-    document.getElementById("counter").innerText = idx + " / " + quizEnd;
+    document.getElementById("counter").innerText = idx + " / " + flashEnd;
+    // Phát âm khi chuyển card (không phát lúc init)
+    if (pre !== undefined) {
+        // Chờ voices load xong (cần thiết lần đầu)
+        if (window.speechSynthesis.getVoices().length === 0) {
+            window.speechSynthesis.onvoiceschanged = function () {
+                speakJapanese(card.kana);
+            };
+        } else {
+            speakJapanese(card.kana);
+        }
+    }
+
 }
 
 // =========================
@@ -74,9 +112,8 @@ progressBar.appendChild(progressFill);
 document.getElementById("progressBar").appendChild(progressBar);
 
 function updateProgress() {
-    //const percent = ((flashcards.length - unusedIndexes.length) / flashcards.length) * 100;
-    //const percent = ((quizEnd - unusedIndexes.length) / quizEnd) * 100;
-    const percent = ((currentIndex + 1 - quizEnd) / quizEnd) * 100 + 100;
+    const rangeSize = flashEnd - flashStart;
+    const percent = rangeSize > 0 ? ((currentIndex - flashStart + 1) / rangeSize) * 100 : 0;
     progressFill.style.width = percent + "%";
 }
 
@@ -109,7 +146,6 @@ function saveScore() {
 }
 
 function nextQuiz() {
-    //const correct = flashcards[Math.floor(Math.random() * flashcards.length)];
     let idx = Math.floor(Math.random() * (quizEnd - quizStart + 1)) + quizStart;
     const correct = flashcards[idx];
     document.getElementById("quizAnswer").innerText = "";
@@ -197,7 +233,7 @@ function nextExamQuestion() {
 
     examCount++;
 
-    let idx = Math.floor(Math.random() * (quizEnd - quizStart + 1)) + quizStart;
+    let idx = Math.floor(Math.random() * (examEnd - examStart + 1)) + examStart;
     const correct = flashcards[idx];
     var titleQuestion = "Câu " + examCount + ": " + correct.word;
     document.getElementById("examQuestion").innerText = titleQuestion;
@@ -266,38 +302,37 @@ function generateRangeOptions() {
         flashSelect.appendChild(opt3);
     }
 
-    //Quiz
-    quizSelect.onchange = function () {
-        const [s, e] = this.value.split("-");
-        //quizStart = parseInt(s);
-        //quizEnd = parseInt(e);
-        updateIndex(parseInt(s), parseInt(e));
-    };
-
-    //Thi thử
-    examSelect.onchange = function () {
-        const [s, e] = this.value.split("-");
-        updateIndex(parseInt(s), parseInt(e));
-    };
-    //Flashcard
+    // Flashcard
     flashSelect.onchange = function () {
         const [s, e] = this.value.split("-");
-        updateIndex(parseInt(s), parseInt(e));
+        flashStart = parseInt(s);
+        flashEnd = parseInt(e) + 1;
+        currentIndex = flashStart;
+        nextCard();
+    };
+
+    // Quiz
+    quizSelect.onchange = function () {
+        const [s, e] = this.value.split("-");
+        quizStart = parseInt(s);
+        quizEnd = parseInt(e) + 1;
+        nextQuiz();
+    };
+
+    // Thi thử
+    examSelect.onchange = function () {
+        const [s, e] = this.value.split("-");
+        examStart = parseInt(s);
+        examEnd = parseInt(e) + 1;
+        startExam();
     };
 }
-function updateIndex(start, end) {
-    if (end > flashcards.length) {
-        quizEnd = flashcards.length;
-    }
-    if (start > flashcards.length) {
-        quizStart = 0;
-    }
-    quizEnd = end;
-    quizStart = start;
-    currentIndex = start;
-    nextCard();
-    nextQuiz();
-    startExam();
+function resetAllRanges() {
+    const defaultEnd = Math.min(20, flashcards.length - 1);
+    flashStart = 0; flashEnd = defaultEnd;
+    quizStart = 0; quizEnd = defaultEnd;
+    examStart = 0; examEnd = defaultEnd;
+    currentIndex = 0;
 }
 
 
@@ -311,14 +346,14 @@ generateRoadmap();
 generateRangeOptions();
 
 document.getElementById("bookSelect").onchange = function () {
-
     if (this.value === "shinkanzen") {
         flashcards = flashcardsShinkanzen;
     } else {
         flashcards = flashcardsSoumatome;
     }
-    // reset lại hệ thống
+    // reset lại toàn bộ hệ thống
     resetFlashcardPool();
+    resetAllRanges();
     generateRangeOptions();
     nextCard();
     nextQuiz();
