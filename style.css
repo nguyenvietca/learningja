@@ -1,0 +1,78 @@
+body {
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #1e3c72, #2a5298);
+    color: white;
+    margin: 0;
+    padding: 20px;
+}
+
+.container {
+    max-width: 900px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+}
+
+button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.primary {
+    background: #2a5298;
+    color: white;
+}
+
+.success {
+    background: #28a745;
+    color: white;
+}
+
+.checkbox-list label {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.flashcard {
+    font-size: 28px;
+    text-align: center;
+    padding: 30px;
+}
+
+.small {
+    font-size: 16px;
+    color: gray;
+}
+
+.correct-answer {
+    background: green;
+    color: white;
+}
+
+.wrong-answer {
+    border: 1px solid red;
+}
+
+.progress-bar {
+    height: 10px;
+    background: #ddd;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.progress-fill {
+    height: 10px;
+    width: 0%;
+    background: #28a745;
+    border-radius: 10px;
+}

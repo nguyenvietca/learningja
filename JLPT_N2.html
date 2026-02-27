@@ -1,148 +1,89 @@
-
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<title>JLPT N2 Study Web App</title>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg,#1e3c72,#2a5298);
-    color:white;
-    margin:0;
-    padding:20px;
-}
-.container {
-    max-width:900px;
-    margin:auto;
-}
-.card {
-    background:white;
-    color:black;
-    padding:20px;
-    border-radius:15px;
-    margin-bottom:20px;
-    box-shadow:0 10px 25px rgba(0,0,0,0.3);
-}
-button {
-    padding:10px 15px;
-    border:none;
-    border-radius:8px;
-    cursor:pointer;
-    margin-top:10px;
-}
-.primary { background:#2a5298; color:white; }
-.success { background:#28a745; color:white; }
-.checkbox-list label {
-    display:block;
-    margin-bottom:8px;
-}
-.flashcard {
-    font-size:28px;
-    text-align:center;
-    padding:30px;
-}
-.small {
-    font-size:16px;
-    color:gray;
-}
-.correct-answer{
-	background: green;
-    color: white;
-}
-.wrong-answer{
-	border: 1px solid red;
-}
-.progress-bar{
-	height: 10px;
-	background: #ddd;
-	borderRadius: 10px;
-	marginTop: 10px;
-}
-.progress-fill{
-	height: 10px;
-	width: 0%;
-	background: #28a745;
-	borderRadius: 10px;
-}
-</style>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="style.css">
+	<title>JLPT N2 Study Web App</title>
 </head>
+
 <body>
-<div class="container">
+	<div class="container">
 
-	<h1>📘 JLPT N2 Study Web App (Thi 12/2026)</h1>
-	<select id="bookSelect">
-	  <option value="shinkanzen">Shinkanzen</option>
-	  <option value="soumatome">Soumatome</option>
-	</select>
-	<div class="card">
-		<h2>📅 Daily Study Checklist</h2>
-		<div class="checkbox-list">
-			<label><input type="checkbox"> 25 từ mới</label>
-			<label><input type="checkbox"> 15 từ ôn</label>
-			<label><input type="checkbox"> 5 câu dài phân tích</label>
-			<label><input type="checkbox"> 1 đoạn đọc ngắn</label>
-			<label><input type="checkbox"> Ôn nhanh cuối buổi</label>
+		<h1>📘 JLPT N2 Study Web App (Thi 12/2026)</h1>
+		<select id="bookSelect">
+			<option value="shinkanzen">Shinkanzen</option>
+			<option value="soumatome">Soumatome</option>
+		</select>
+		<div class="card">
+			<h2>📅 Daily Study Checklist</h2>
+			<div class="checkbox-list">
+				<label><input type="checkbox"> 25 từ mới</label>
+				<label><input type="checkbox"> 15 từ ôn</label>
+				<label><input type="checkbox"> 5 câu dài phân tích</label>
+				<label><input type="checkbox"> 1 đoạn đọc ngắn</label>
+				<label><input type="checkbox"> Ôn nhanh cuối buổi</label>
+			</div>
+			<div id="progressBar"></div>
 		</div>
-		<div id="progressBar"></div>
-	</div>
 
-	<div class="card">
-		<h2>🧠 Flashcard N2 (200 từ)</h2>
-		<div class="small" id="counter"></div>
-		<select id="flashRangeSelect"></select>
-		<div class="flashcard" id="flashcard"></div>
-		<div>
-			<span class="small" id="kana"></span>
-			<span class="small" id="meaning" style="display:none;"></span>
-			<div class="small" id="example"></div>
+		<div class="card">
+			<h2>🧠 Flashcard N2 (200 từ)</h2>
+			<div class="small" id="counter"></div>
+			<select id="flashRangeSelect"></select>
+			<div class="flashcard" id="flashcard"></div>
+			<div>
+				<span class="small" id="kana"></span>
+				<span class="small" id="meaning" style="display:none;"></span>
+				<div class="small" id="example"></div>
+			</div>
+			<button class="primary" id="toggleBtn" onclick="toggleMeaning()">Hiện nghĩa</button>
+			<button class="success" onclick="nextCard(1)">Từ trước đó</button>
+			<button class="success" onclick="nextCard(0)">Từ tiếp theo</button>
 		</div>
-		<button class="primary" id="toggleBtn" onclick="toggleMeaning()">Hiện nghĩa</button>
-		<button class="success" onclick="nextCard(1)">Từ trước đó</button>
-		<button class="success" onclick="nextCard(0)">Từ tiếp theo</button>
-	</div>
 
-	<div class="card">
-		<h2>🎯 Quiz N2</h2>
-		<select id="quizRangeSelect"></select>
-		<div id="quizQuestion" style="font-size:22px; margin-bottom:10px;"></div>
-		<div id="quizOptions"></div>
-		<div style="height: 50px;">
-			<div class="small" id="quizScore"></div>
-			<div class="small" id="quizAnswer"></div>
+		<div class="card">
+			<h2>🎯 Quiz N2</h2>
+			<select id="quizRangeSelect"></select>
+			<div id="quizQuestion" style="font-size:22px; margin-bottom:10px;"></div>
+			<div id="quizOptions"></div>
+			<div style="height: 50px;">
+				<div class="small" id="quizScore"></div>
+				<div class="small" id="quizAnswer"></div>
+			</div>
+			<button class="success" onclick="nextQuiz()">Câu tiếp theo</button>
 		</div>
-		<button class="success" onclick="nextQuiz()">Câu tiếp theo</button>
-	</div>
 
-	<div class="card">
-		<h2>📆 Lộ trình 6 tháng (24 tuần)</h2>
-		<div id="roadmap"></div>
-	</div>
-
-	<div class="card">
-		<h2>📝 Thi thử N2 (30 câu)</h2>
-		<div>
-			<select id="examRangeSelect"></select>
+		<div class="card">
+			<h2>📆 Lộ trình 6 tháng (24 tuần)</h2>
+			<div id="roadmap"></div>
 		</div>
-		<div id="examQuestion"></div>
-		<div id="examOptions" style="display: grid;"></div>
-		<div id="examResult"></div>
-		<button class="primary" onclick="startExam()">Bắt đầu thi</button>
-	</div>
-	<div class="card">
-		<h2>📖 Quy tắc vàng đọc N2</h2>
-		<ul>
-		<li>Nếu có <b>が</b> → Ý chính thường nằm phía sau</li>
-		<li>Tìm động từ chính ở cuối câu</li>
-		<li>Không dịch từng chữ – chia mệnh đề</li>
-		</ul>
-	</div>
 
-</div>
-<script src="shinkanzenData.js"></script>
-<script src="somatomeData.js"></script>
-<script src="app.js"></script>
+		<div class="card">
+			<h2>📝 Thi thử N2 (30 câu)</h2>
+			<div>
+				<select id="examRangeSelect"></select>
+			</div>
+			<div id="examQuestion"></div>
+			<div id="examOptions" style="display: grid;"></div>
+			<div id="examResult"></div>
+			<button class="primary" onclick="startExam()">Bắt đầu thi</button>
+		</div>
+		<div class="card">
+			<h2>📖 Quy tắc vàng đọc N2</h2>
+			<ul>
+				<li>Nếu có <b>が</b> → Ý chính thường nằm phía sau</li>
+				<li>Tìm động từ chính ở cuối câu</li>
+				<li>Không dịch từng chữ – chia mệnh đề</li>
+			</ul>
+		</div>
+
+	</div>
+	<script src="shinkanzenData.js"></script>
+	<script src="somatomeData.js"></script>
+	<script src="app.js"></script>
 
 
 </body>
+
 </html>
