@@ -52,8 +52,11 @@
 			<select id="quizRangeSelect"></select>
 			<div id="quizQuestion" style="font-size:22px; margin-bottom:10px;"></div>
 			<div id="quizOptions"></div>
-			<div style="height: 50px;">
+			<div style="display:flex; align-items:center; gap:10px; flex-wrap:wrap; min-height:30px;">
 				<div class="small" id="quizScore"></div>
+				<button onclick="resetScore()"
+					style="font-size:12px; padding:4px 10px; background:#e74c3c; color:white; border-radius:20px; margin-top:0;">🔄
+					Reset</button>
 				<div class="small" id="quizAnswer"></div>
 			</div>
 			<button class="success" onclick="nextQuiz()">Câu tiếp theo</button>
@@ -68,6 +71,9 @@
 			<h2>📝 Thi thử N2 (30 câu)</h2>
 			<div>
 				<select id="examRangeSelect"></select>
+				<label style="margin-left:10px; font-size:14px; cursor:pointer;">
+					<input type="checkbox" id="randomExamToggle"> 🎲 Random toàn bộ
+				</label>
 			</div>
 			<div id="examQuestion"></div>
 			<div id="examOptions" style="display: grid;"></div>

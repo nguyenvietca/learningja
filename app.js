@@ -139,10 +139,24 @@ function toggleMeaning() {
 // QUIZ + LOCAL STORAGE
 // =========================
 let score = localStorage.getItem("quizScore") ? parseInt(localStorage.getItem("quizScore")) : 0;
-document.getElementById("quizScore").innerText = "Điểm: " + score;
+let quizTotal = localStorage.getItem("quizTotal") ? parseInt(localStorage.getItem("quizTotal")) : 0;
+
+function updateScoreDisplay() {
+    document.getElementById("quizScore").innerText =
+        `✅ Đúng: ${score} / ${quizTotal} câu`;
+}
+updateScoreDisplay();
 
 function saveScore() {
     localStorage.setItem("quizScore", score);
+    localStorage.setItem("quizTotal", quizTotal);
+}
+
+function resetScore() {
+    score = 0;
+    quizTotal = 0;
+    saveScore();
+    updateScoreDisplay();
 }
 
 function nextQuiz() {
@@ -173,14 +187,23 @@ function nextQuiz() {
         btn.style.marginBottom = "8px";
 
         btn.onclick = function () {
+            // Khóa tất cả button ngăn click nhiều lần
+            container.querySelectorAll('button').forEach(b => b.disabled = true);
+            quizTotal++;
             if (opt === correct.meaning) {
                 score++;
-                saveScore();
                 this.classList.add("correct-answer");
             } else {
                 this.classList.add("wrong-answer");
+                // Highlight đáp án đúng
+                container.querySelectorAll('button').forEach(b => {
+                    if (b.innerText === correct.meaning) {
+                        b.classList.add("correct-answer");
+                    }
+                });
             }
-            document.getElementById("quizScore").innerText = "Điểm: " + score;
+            saveScore();
+            updateScoreDisplay();
             document.getElementById("quizAnswer").innerText =
                 "Đáp án: " + correct.kana + " (" + correct.meaning + ")";
         };
@@ -233,7 +256,13 @@ function nextExamQuestion() {
 
     examCount++;
 
-    let idx = Math.floor(Math.random() * (examEnd - examStart + 1)) + examStart;
+    let idx;
+    const randomAll = document.getElementById('randomExamToggle');
+    if (randomAll && randomAll.checked) {
+        idx = Math.floor(Math.random() * flashcards.length);
+    } else {
+        idx = Math.floor(Math.random() * (examEnd - examStart + 1)) + examStart;
+    }
     const correct = flashcards[idx];
     var titleQuestion = "Câu " + examCount + ": " + correct.word;
     document.getElementById("examQuestion").innerText = titleQuestion;
