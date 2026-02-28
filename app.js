@@ -279,13 +279,14 @@ let examCount = 0;
 function startExam() {
     examScore = 0;
     examCount = 0;
+    document.getElementById("examResult").innerText = "";
     nextExamQuestion();
 }
 
 function nextExamQuestion() {
     if (examCount >= 30) {
         document.getElementById("examResult").innerText =
-            "Kết quả: " + examScore + "/30";
+            "Kết quả: " + examScore + "/" + examCount;
         return;
     }
 
@@ -319,6 +320,7 @@ function nextExamQuestion() {
     options.forEach(opt => {
         const btn = document.createElement("button");
         btn.innerText = opt;
+        btn.style.marginBottom = "8px";
         btn.onclick = function () {
             if (opt === correct.meaning) {
                 examScore++;

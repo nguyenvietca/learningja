@@ -284,7 +284,7 @@ var shinkanzenData = [
       { char: "援", hanviet: "Viện" },
       { char: "助", hanviet: "Trợ" }
     ],
-    example: "政府が<ruby>援助<rp>(</rp><rt>えんじょ</rt><rp>)</rp></ruby>を行う。",
+    example: "<ruby>政府<rp>(</rp><rt>せいふ</rt><rp>)</rp></ruby>が<ruby>援助<rp>(</rp><rt>えんじょ</rt><rp>)</rp></ruby>を行う。",
     exMeaning: "Chính phủ tiến hành viện trợ."
   },
 
@@ -297,7 +297,7 @@ var shinkanzenData = [
       { char: "応", hanviet: "Ứng" },
       { char: "援", hanviet: "Viện" }
     ],
-    example: "友達を<ruby>応援<rp>(</rp><rt>おうえん</rt><rp>)</rp></ruby>する。",
+    example: "<ruby>友達<rp>(</rp><rt>ともだち</rt><rp>)</rp></ruby>を<ruby>応援<rp>(</rp><rt>おうえん</rt><rp>)</rp></ruby>する。",
     exMeaning: "Cổ vũ bạn bè."
   },
 
@@ -310,7 +310,7 @@ var shinkanzenData = [
       { char: "応", hanviet: "Ứng" },
       { char: "用", hanviet: "Dụng" }
     ],
-    example: "知識を<ruby>応用<rp>(</rp><rt>おうよう</rt><rp>)</rp></ruby>する。",
+    example: "<ruby>知識<rp>(</rp><rt>ちしき</rt><rp>)</rp></ruby>を<ruby>応用<rp>(</rp><rt>おうよう</rt><rp>)</rp></ruby>する。",
     exMeaning: "Ứng dụng kiến thức."
   },
 
@@ -323,7 +323,7 @@ var shinkanzenData = [
       { char: "横", hanviet: "Hoành" },
       { char: "断", hanviet: "Đoạn" }
     ],
-    example: "道を<ruby>横断<rp>(</rp><rt>おうだん</rt><rp>)</rp></ruby>する。",
+    example: "<ruby>道<rp>(</rp><rt>みち</rt><rp>)</rp></ruby>を<ruby>横断<rp>(</rp><rt>おうだん</rt><rp>)</rp></ruby>する。",
     exMeaning: "Băng qua đường."
   },
 
@@ -336,7 +336,7 @@ var shinkanzenData = [
       { char: "解", hanviet: "Giải" },
       { char: "決", hanviet: "Quyết" }
     ],
-    example: "問題を<ruby>解決<rp>(</rp><rt>かいけつ</rt><rp>)</rp></ruby>する。",
+    example: "<ruby>問題<rp>(</rp><rt>もんだい</rt><rp>)</rp></ruby>を<ruby>解決<rp>(</rp><rt>かいけつ</rt><rp>)</rp></ruby>する。",
     exMeaning: "Giải quyết vấn đề."
   },
 
@@ -349,7 +349,7 @@ var shinkanzenData = [
       { char: "改", hanviet: "Cải" },
       { char: "善", hanviet: "Thiện" }
     ],
-    example: "生活を<ruby>改善<rp>(</rp><rt>かいぜん</rt><rp>)</rp></ruby>する。",
+    example: "<ruby>生活<rp>(</rp><rt>せいかく</rt><rp>)</rp></ruby>を<ruby>改善<rp>(</rp><rt>かいぜん</rt><rp>)</rp></ruby>する。",
     exMeaning: "Cải thiện cuộc sống."
   },
 
@@ -362,7 +362,7 @@ var shinkanzenData = [
       { char: "確", hanviet: "Xác" },
       { char: "実", hanviet: "Thực" }
     ],
-    example: "これは<ruby>確実<rp>(</rp><rt>かくじつ</rt><rp>)</rp></ruby>な方法だ。",
+    example: "これは<ruby>確実<rp>(</rp><rt>かくじつ</rt><rp>)</rp></ruby>な<ruby>方法<rp>(</rp><rt>ほうほう</rt><rp>)</rp></ruby>だ。",
     exMeaning: "Đây là phương pháp chắc chắn."
   },
 
@@ -504,7 +504,7 @@ var shinkanzenData = [
       { char: "構", hanviet: "Cấu" },
       { char: "成", hanviet: "Thành" }
     ],
-    example: "文章の<ruby>構成<rp>(</rp><rt>こうせい</rt><rp>)</rp></ruby>を考える。",
+    example: "<ruby>文章<rp>(</rp><rt>ぶんしょう</rt><rp>)</rp></ruby>の<ruby>構成<rp>(</rp><rt>こうせい</rt><rp>)</rp></ruby>を考える。",
     exMeaning: "Suy nghĩ về cấu trúc bài viết."
   },
   {
@@ -1331,7 +1331,7 @@ var shinkanzenData = [
       { char: "批", hanviet: "Phê" },
       { char: "判", hanviet: "Phán" }
     ],
-    example: "政府を<ruby>批判<rp>(</rp><rt>ひはん</rt><rp>)</rp></ruby>する。",
+    example: "<ruby>政府<rp>(</rp><rt>せいふ</rt><rp>)</rp></ruby>を<ruby>批判<rp>(</rp><rt>ひはん</rt><rp>)</rp></ruby>する。",
     exMeaning: "Phê phán chính phủ."
   },
 
