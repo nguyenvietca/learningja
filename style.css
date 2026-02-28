@@ -72,7 +72,9 @@ button {
 }
 
 .checkbox-list label {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 10px;
     margin-bottom: 8px;
 }
 
@@ -132,7 +134,7 @@ button {
 .btn-row {
     display: flex;
     gap: 8px;
-    margin-top: 10px;
+    margin: 10px 0;
     flex-wrap: wrap;
 }
 
@@ -141,11 +143,31 @@ button {
     margin-top: 10px;
 }
 
-.autospeak-label {
-    display: inline-block;
-    margin-left: 10px;
+.flashcard-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-size: 14px;
     cursor: pointer;
+    margin-right: 15px;
+    margin-top: 5px;
+}
+
+.autorun-controls {
+    margin: 10px 0 0 10px;
+    padding-top: 10px;
+    border-top: 1px dashed #eee;
+}
+
+.form-check-input {
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    cursor: pointer;
+}
+
+#speedControl input[type="range"] {
+    cursor: pointer;
+    width: 150px;
 }
 
 .exam-controls {
@@ -232,8 +254,10 @@ button {
         padding: 10px 4px;
     }
 
-    .autospeak-label {
-        display: block;
+    .flashcard-option {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
         margin-left: 0;
         margin-top: 10px;
         font-size: 13px;
@@ -264,6 +288,15 @@ button {
         align-items: flex-start;
         gap: 6px;
     }
+}
+
+#roadmap label,
+.exam-controls label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 5px;
+    cursor: pointer;
 }
 
 .facebook-float {

@@ -75,9 +75,25 @@
 						<button class="primary" id="toggleBtn" onclick="toggleMeaning()">Hiện nghĩa</button>
 						<button class="success" onclick="nextCard(0)">Tiếp ▶</button>
 					</div>
-					<label class="autospeak-label">
-						<input type="checkbox" id="autoSpeakToggle" checked> 🔊 Phát âm tự động
-					</label>
+
+					<div class="autorun-controls">
+						<label class="flashcard-option">
+							<input type="checkbox" id="autoSpeakToggle" class="form-check-input" checked> 🔊 Phát âm tự
+							động
+						</label>
+						<label class="flashcard-option">
+							<input type="checkbox" id="autoShowMeaningToggle" class="form-check-input"> 📖 Hiện nghĩa tự
+							động
+						</label>
+						<label class="flashcard-option">
+							<input type="checkbox" id="autoRunToggle" class="form-check-input"> 🔄 Tự động chạy
+						</label>
+						<div id="speedControl" style="display: none; align-items: center; gap: 10px; margin-top: 5px;">
+							<span class="small">Tốc độ:</span>
+							<input type="range" id="autoRunSpeed" min="2" max="10" value="3" step="1">
+							<span class="small" id="speedValue">3s</span>
+						</div>
+					</div>
 				</div>
 			</div>
 

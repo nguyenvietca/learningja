@@ -22,6 +22,10 @@ let quizEnd = Math.min(20, flashcards.length - 1);
 let examStart = 0;
 let examEnd = Math.min(20, flashcards.length - 1);
 
+// Auto run state
+let autoRunInterval = null;
+let autoRunDirection = 0; // 0 for Next, 1 for Previous
+
 function resetFlashcardPool() {
     unusedIndexes = [...Array(flashcards.length).keys()];
 }
@@ -65,23 +69,54 @@ function nextCard(pre) {
     }
     renderCard(pre);
     updateProgress();
+
+    // Reset auto-run if manual click
+    if (pre !== undefined) {
+        autoRunDirection = pre;
+        restartAutoRun();
+    }
+}
+
+function startAutoRun() {
+    stopAutoRun();
+    const speed = parseInt(document.getElementById("autoRunSpeed").value) * 1000;
+    autoRunInterval = setInterval(() => {
+        nextCard(autoRunDirection);
+    }, speed);
+}
+
+function stopAutoRun() {
+    if (autoRunInterval) {
+        clearInterval(autoRunInterval);
+        autoRunInterval = null;
+    }
+}
+
+function restartAutoRun() {
+    const toggle = document.getElementById("autoRunToggle");
+    if (toggle && toggle.checked) {
+        startAutoRun();
+    }
 }
 
 function renderCard(pre) {
-    //let idx = Math.floor(Math.random() * (quizEnd - quizStart + 1)) + quizStart;
-    //const card =flashcards[idx];
     const card = flashcards[currentIndex];
     document.getElementById("flashcard").innerText = card.word;
     document.getElementById("kana").innerText = card.kana;
     document.getElementById("meaning").innerText = " (" + card.meaning + ")";
-    document.getElementById("meaning").style.display = "none";
-    document.getElementById("toggleBtn").innerText = "Hiện nghĩa";
-    //example
-    document.getElementById("example").style.display = "none";
+
+    const showMeaningToggle = document.getElementById("autoShowMeaningToggle");
+    if (showMeaningToggle && showMeaningToggle.checked) {
+        document.getElementById("meaning").style.display = "inline";
+        document.getElementById("example").style.display = "block";
+        document.getElementById("toggleBtn").innerText = "Ẩn nghĩa";
+    } else {
+        document.getElementById("meaning").style.display = "none";
+        document.getElementById("example").style.display = "none";
+        document.getElementById("toggleBtn").innerText = "Hiện nghĩa";
+    }
+
     document.getElementById("example").innerHTML = card.example + "( " + card.exMeaning + " )";
-
-    //document.getElementById("counter").innerText = (flashcards.length - unusedIndexes.length) + " / " + flashcards.length;
-
 
     var idx = currentIndex + 1;
     document.getElementById("counter").innerText = idx + " / " + flashEnd;
@@ -386,5 +421,26 @@ document.getElementById("bookSelect").onchange = function () {
     generateRangeOptions();
     nextCard();
     nextQuiz();
+};
+
+// Auto run listeners
+document.getElementById("autoRunToggle").onchange = function () {
+    const speedControl = document.getElementById("speedControl");
+    if (this.checked) {
+        speedControl.style.display = "flex";
+        startAutoRun();
+    } else {
+        speedControl.style.display = "none";
+        stopAutoRun();
+    }
+};
+
+document.getElementById("autoRunSpeed").oninput = function () {
+    document.getElementById("speedValue").innerText = this.value + "s";
+    restartAutoRun();
+};
+
+document.getElementById("autoShowMeaningToggle").onchange = function () {
+    renderCard();
 };
 
