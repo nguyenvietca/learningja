@@ -109,3 +109,159 @@ button {
     background: #28a745;
     border-radius: 10px;
 }
+
+/* ===== DESKTOP / MOBILE SHARED ===== */
+
+/* Trên desktop, tab-pane luôn hiện như block bình thường */
+.main-content .tab-pane {
+    display: block !important;
+    opacity: 1 !important;
+}
+
+/* Tab Nav chỉ hiện trên mobile */
+.mobile-tab-nav {
+    display: none;
+}
+
+/* Card chỉ desktop */
+.desktop-only-card {
+    display: block;
+}
+
+/* Btn row cho flashcard: đơn giản trên desktop */
+.btn-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    flex-wrap: wrap;
+}
+
+.btn-full {
+    width: 100%;
+    margin-top: 10px;
+}
+
+.autospeak-label {
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.exam-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+
+/* ===== MOBILE (≤768px) ===== */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+
+    h1 {
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    /* Ẩn các card chỉ dành cho desktop */
+    .desktop-only-card {
+        display: none;
+    }
+
+    /* Hiện tab nav */
+    .mobile-tab-nav {
+        display: flex;
+        border-bottom: none;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 14px 14px 0 0;
+        overflow: hidden;
+        gap: 2px;
+        padding: 4px 4px 0 4px;
+    }
+
+    .mobile-tab-nav .nav-link {
+        color: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.08);
+        border: none;
+        border-radius: 10px 10px 0 0;
+        font-size: 13px;
+        font-weight: 600;
+        padding: 10px 6px;
+        transition: background 0.2s, color 0.2s;
+    }
+
+    .mobile-tab-nav .nav-link.active {
+        background: white;
+        color: #1e3c72;
+    }
+
+    .mobile-tab-nav .nav-link:hover {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    /* Trên mobile, Bootstrap tab hoạt động bình thường: chỉ active hiện */
+    .main-content .tab-pane {
+        display: none !important;
+        opacity: 0 !important;
+    }
+
+    .main-content .tab-pane.show.active {
+        display: block !important;
+        opacity: 1 !important;
+    }
+
+    .main-content .tab-pane .card {
+        border-radius: 0 0 15px 15px;
+        margin-bottom: 10px;
+    }
+
+    /* Btn row mobile */
+    .btn-row {
+        gap: 6px;
+        margin-top: 12px;
+    }
+
+    .btn-row button {
+        flex: 1;
+        font-size: 14px;
+        padding: 10px 4px;
+    }
+
+    .autospeak-label {
+        display: block;
+        margin-left: 0;
+        margin-top: 10px;
+        font-size: 13px;
+    }
+
+    /* Quiz / Exam options mobile */
+    #quizOptions button,
+    #examOptions button {
+        width: 100%;
+        margin-bottom: 8px;
+        padding: 12px;
+        font-size: 14px;
+    }
+
+    /* Selects mobile */
+    #flashRangeSelect,
+    #quizRangeSelect,
+    #examRangeSelect {
+        width: 100%;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+    }
+
+    .exam-controls {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+}
