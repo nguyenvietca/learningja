@@ -58,7 +58,7 @@ button {
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    margin-top: 10px;
+    /* margin-top: 10px; */
 }
 
 .primary {
@@ -180,7 +180,7 @@ button {
         border-radius: 14px 14px 0 0;
         overflow: hidden;
         gap: 2px;
-        padding: 4px 4px 0 4px;
+        /* padding: 4px 4px 0 4px; */
     }
 
     .mobile-tab-nav .nav-link {
@@ -264,4 +264,30 @@ button {
         align-items: flex-start;
         gap: 6px;
     }
+}
+
+.facebook-float {
+    position: fixed;
+    bottom: 80px;
+    /* cao hơn nút scroll-top nếu có */
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background-color: #1877f2;
+    /* màu Facebook */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    z-index: 999;
+}
+
+.facebook-float:hover {
+    background-color: #145dbf;
+    transform: scale(1.2);
 }
