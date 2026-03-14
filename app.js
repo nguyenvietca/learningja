@@ -118,6 +118,19 @@ function renderCard(pre) {
 
     document.getElementById("example").innerHTML = card.example + "( " + card.exMeaning + " )";
 
+    // Hiện kanji nếu checkbox bật
+    const showKanjiToggle = document.getElementById("showKanjiToggle");
+    const kanjiDisplay = document.getElementById("kanjiDisplay");
+    if (showKanjiToggle && showKanjiToggle.checked && card.kanji && card.kanji.length > 0) {
+        kanjiDisplay.innerHTML = card.kanji.map(k =>
+            `<span class="kanji-item"><span class="kanji-char">${k.char}</span><span class="kanji-hanviet">${k.hanviet}</span></span>`
+        ).join("");
+        kanjiDisplay.style.display = "flex";
+    } else {
+        kanjiDisplay.style.display = "none";
+        kanjiDisplay.innerHTML = "";
+    }
+
     var idx = currentIndex + 1;
     document.getElementById("counter").innerText = idx + " / " + flashEnd;
     // Phát âm khi chuyển card (không phát lúc init)
@@ -446,3 +459,6 @@ document.getElementById("autoShowMeaningToggle").onchange = function () {
     renderCard();
 };
 
+document.getElementById("showKanjiToggle").onchange = function () {
+    renderCard();
+};

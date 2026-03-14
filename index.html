@@ -64,7 +64,10 @@
 					<h2>🧠 Flashcard N2 (200 từ)</h2>
 					<div class="small" id="counter"></div>
 					<select id="flashRangeSelect"></select>
-					<div class="flashcard" id="flashcard"></div>
+					<div class="flashcard-container">
+						<div class="flashcard" id="flashcard"></div>
+						<div id="kanjiDisplay" style="display:none;"></div>
+					</div>
 					<div>
 						<span class="small" id="kana"></span>
 						<span class="small" id="meaning" style="display:none;"></span>
@@ -84,6 +87,9 @@
 						<label class="flashcard-option">
 							<input type="checkbox" id="autoShowMeaningToggle" class="form-check-input"> 📖 Hiện nghĩa tự
 							động
+						</label>
+						<label class="flashcard-option">
+							<input type="checkbox" id="showKanjiToggle" class="form-check-input"> 🈳 Hiện Kanji
 						</label>
 						<label class="flashcard-option">
 							<input type="checkbox" id="autoRunToggle" class="form-check-input"> 🔄 Tự động chạy

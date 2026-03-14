@@ -78,10 +78,53 @@ button {
     margin-bottom: 8px;
 }
 
+.flashcard-container {
+    background: #f0f4ff;
+    border-radius: 10px;
+    border: 1px dashed #a0b4e0;
+    padding: 10px;
+    margin: 10px 0;
+}
+
 .flashcard {
-    font-size: 40px;
+    font-size: 60px;
     text-align: center;
-    padding: 30px;
+    padding: 20px;
+}
+
+#kanjiDisplay {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 0 0 10px;
+    padding: 8px 10px;
+}
+
+.kanji-item {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+    border: 1.5px solid #c0cdee;
+    border-radius: 8px;
+    padding: 6px 14px;
+    min-width: 48px;
+    box-shadow: 0 2px 6px rgba(42, 82, 152, 0.08);
+}
+
+.kanji-char {
+    font-size: 22px;
+    font-weight: 700;
+    color: #1e3c72;
+    line-height: 1.2;
+}
+
+.kanji-hanviet {
+    font-size: 11px;
+    color: #7a8db5;
+    margin-top: 2px;
+    font-style: italic;
 }
 
 .small {
@@ -178,6 +221,16 @@ button {
     margin-bottom: 10px;
 }
 
+#flashRangeSelect,
+#quizRangeSelect,
+#examRangeSelect {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
 /* ===== MOBILE (≤768px) ===== */
 @media (max-width: 768px) {
     body {
@@ -269,17 +322,6 @@ button {
         width: 100%;
         margin-bottom: 8px;
         padding: 12px;
-        font-size: 14px;
-    }
-
-    /* Selects mobile */
-    #flashRangeSelect,
-    #quizRangeSelect,
-    #examRangeSelect {
-        width: 100%;
-        padding: 8px 12px;
-        border-radius: 8px;
-        border: 1px solid #ccc;
         font-size: 14px;
     }
 
