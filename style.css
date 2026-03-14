@@ -87,7 +87,7 @@ button {
 }
 
 .flashcard {
-    font-size: 60px;
+    font-size: 40px;
     text-align: center;
     padding: 20px;
 }
@@ -114,14 +114,14 @@ button {
 }
 
 .kanji-char {
-    font-size: 22px;
-    font-weight: 700;
+    font-size: 25px;
+    font-weight: 400;
     color: #1e3c72;
     line-height: 1.2;
 }
 
 .kanji-hanviet {
-    font-size: 11px;
+    font-size: 20px;
     color: #7a8db5;
     margin-top: 2px;
     font-style: italic;

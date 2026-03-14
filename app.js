@@ -55,17 +55,21 @@ function nextCard(pre) {
     if (unusedIndexes.length === 0) {
         resetFlashcardPool();
     }
-    if (currentIndex >= flashEnd || currentIndex < flashStart) {
-        currentIndex = flashStart;
-    }
-
     if (pre == 1) {
         currentIndex--;
+        if (currentIndex < flashStart) {
+            currentIndex = flashEnd - 1; // wrap về cuối
+        }
     } else if (pre == 0) {
         currentIndex++;
-    }
-    if (currentIndex >= flashEnd || currentIndex < flashStart) {
-        currentIndex = flashStart;
+        if (currentIndex >= flashEnd) {
+            currentIndex = flashStart; // wrap về đầu
+        }
+    } else {
+        // init call (pre === undefined): đảm bảo trong range
+        if (currentIndex < flashStart || currentIndex >= flashEnd) {
+            currentIndex = flashStart;
+        }
     }
     renderCard(pre);
     updateProgress();
