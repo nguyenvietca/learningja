@@ -274,8 +274,9 @@ function toggleStar() {
 function updateStarCount() {
     const bookKey = document.getElementById("bookSelect").value;
     const starred = getStarredList(bookKey);
+    const inRange = starred.filter(i => i >= flashStart && i < flashEnd);
     const el = document.getElementById("starCount");
-    if (el) el.textContent = starred.length > 0 ? `(${starred.length})` : "";
+    if (el) el.textContent = inRange.length > 0 ? `(${inRange.length})` : "";
 }
 // =========================
 // QUIZ + LOCAL STORAGE
