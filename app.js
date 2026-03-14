@@ -55,22 +55,56 @@ function nextCard(pre) {
     if (unusedIndexes.length === 0) {
         resetFlashcardPool();
     }
-    if (pre == 1) {
-        currentIndex--;
-        if (currentIndex < flashStart) {
-            currentIndex = flashEnd - 1; // wrap về cuối
+
+    const starOnly = document.getElementById("starOnlyToggle");
+    const bookKey = document.getElementById("bookSelect").value;
+    const starred = getStarredList(bookKey);
+
+    // Nếu đang ở mode chỉ ôn từ chưa thuộc
+    if (starOnly && starOnly.checked && starred.length > 0) {
+        // Lọc starred theo range hiện tại
+        const pool = starred.filter(i => i >= flashStart && i < flashEnd);
+        if (pool.length === 0) {
+            // không có từ starred trong range, thông báo
+            document.getElementById("flashcard").innerText = "⭐ Không có từ nào chưa thuộc trong bài này!";
+            document.getElementById("kana").innerText = "";
+            document.getElementById("meaning").style.display = "none";
+            document.getElementById("example").innerHTML = "";
+            document.getElementById("kanjiDisplay").style.display = "none";
+            document.getElementById("starBtn").textContent = "☆ Chưa thuộc";
+            document.getElementById("starBtn").classList.remove("starred");
+            return;
         }
-    } else if (pre == 0) {
-        currentIndex++;
-        if (currentIndex >= flashEnd) {
-            currentIndex = flashStart; // wrap về đầu
+        const posInPool = pool.indexOf(currentIndex);
+        if (pre == 1) {
+            const newPos = posInPool <= 0 ? pool.length - 1 : posInPool - 1;
+            currentIndex = pool[newPos];
+        } else if (pre == 0) {
+            const newPos = posInPool >= pool.length - 1 ? 0 : posInPool + 1;
+            currentIndex = pool[newPos];
+        } else {
+            // init: chọn phần tử đầu tiên trong pool
+            if (!pool.includes(currentIndex)) currentIndex = pool[0];
         }
     } else {
-        // init call (pre === undefined): đảm bảo trong range
-        if (currentIndex < flashStart || currentIndex >= flashEnd) {
-            currentIndex = flashStart;
+        if (pre == 1) {
+            currentIndex--;
+            if (currentIndex < flashStart) {
+                currentIndex = flashEnd - 1; // wrap về cuối
+            }
+        } else if (pre == 0) {
+            currentIndex++;
+            if (currentIndex >= flashEnd) {
+                currentIndex = flashStart; // wrap về đầu
+            }
+        } else {
+            // init call (pre === undefined): đảm bảo trong range
+            if (currentIndex < flashStart || currentIndex >= flashEnd) {
+                currentIndex = flashStart;
+            }
         }
     }
+
     renderCard(pre);
     updateProgress();
 
@@ -137,6 +171,20 @@ function renderCard(pre) {
 
     var idx = currentIndex + 1;
     document.getElementById("counter").innerText = idx + " / " + flashEnd;
+
+    // Cập nhật nút Star
+    const bookKey = document.getElementById("bookSelect").value;
+    const starred = getStarredList(bookKey);
+    const starBtn = document.getElementById("starBtn");
+    if (starred.includes(currentIndex)) {
+        starBtn.textContent = "★ Chưa thuộc";
+        starBtn.classList.add("starred");
+    } else {
+        starBtn.textContent = "☆ Chưa thuộc";
+        starBtn.classList.remove("starred");
+    }
+    updateStarCount();
+
     // Phát âm khi chuyển card (không phát lúc init)
     if (pre !== undefined) {
         // Chờ voices load xong (cần thiết lần đầu)
@@ -185,8 +233,50 @@ function toggleMeaning() {
     }
 }
 
+// =========================
+// STAR / CHƯ A THUỘC
+// =========================
+function getStarKey(bookKey) {
+    return "starred_" + bookKey;
+}
 
+function getStarredList(bookKey) {
+    const raw = localStorage.getItem(getStarKey(bookKey));
+    return raw ? JSON.parse(raw) : [];
+}
 
+function saveStarredList(bookKey, list) {
+    localStorage.setItem(getStarKey(bookKey), JSON.stringify(list));
+}
+
+function toggleStar() {
+    const bookKey = document.getElementById("bookSelect").value;
+    let starred = getStarredList(bookKey);
+    const idx = starred.indexOf(currentIndex);
+    if (idx === -1) {
+        starred.push(currentIndex);
+    } else {
+        starred.splice(idx, 1);
+    }
+    saveStarredList(bookKey, starred);
+    // cập nhật nút
+    const starBtn = document.getElementById("starBtn");
+    if (starred.includes(currentIndex)) {
+        starBtn.textContent = "★ Chưa thuộc";
+        starBtn.classList.add("starred");
+    } else {
+        starBtn.textContent = "☆ Chưa thuộc";
+        starBtn.classList.remove("starred");
+    }
+    updateStarCount();
+}
+
+function updateStarCount() {
+    const bookKey = document.getElementById("bookSelect").value;
+    const starred = getStarredList(bookKey);
+    const el = document.getElementById("starCount");
+    if (el) el.textContent = starred.length > 0 ? `(${starred.length})` : "";
+}
 // =========================
 // QUIZ + LOCAL STORAGE
 // =========================
@@ -466,3 +556,61 @@ document.getElementById("autoShowMeaningToggle").onchange = function () {
 document.getElementById("showKanjiToggle").onchange = function () {
     renderCard();
 };
+
+document.getElementById("starOnlyToggle").onchange = function () {
+    // khi bật mode star-only, nhảy về từ starred đầu tiên trong range
+    nextCard();
+};
+
+// =========================
+// SWIPE GESTURE (mobile)
+// =========================
+(function () {
+    let touchStartX = 0;
+    const el = document.getElementById("flashcard");
+    el.addEventListener("touchstart", function (e) {
+        touchStartX = e.changedTouches[0].clientX;
+    }, { passive: true });
+    el.addEventListener("touchend", function (e) {
+        const dx = e.changedTouches[0].clientX - touchStartX;
+        if (Math.abs(dx) < 40) return; // bỏ qua swipe quá ngắn
+        if (dx < 0) {
+            nextCard(0); // vuốt trái → Tiếp
+        } else {
+            nextCard(1); // vuốt phải → Trước
+        }
+    }, { passive: true });
+})();
+
+// =========================
+// PHÍM TẮT BÀN PHÍM
+// =========================
+document.addEventListener("keydown", function (e) {
+    // Không kích hoạt khi đang focus vào input / select
+    if (["INPUT", "SELECT", "TEXTAREA"].includes(document.activeElement.tagName)) return;
+
+    switch (e.key) {
+        case "ArrowLeft":
+            e.preventDefault();
+            nextCard(1);
+            break;
+        case "ArrowRight":
+            e.preventDefault();
+            nextCard(0);
+            break;
+        case " ": // Space
+            e.preventDefault();
+            toggleMeaning();
+            break;
+        case "k":
+        case "K": {
+            const kToggle = document.getElementById("showKanjiToggle");
+            if (kToggle) { kToggle.checked = !kToggle.checked; renderCard(); }
+            break;
+        }
+        case "s":
+        case "S":
+            toggleStar();
+            break;
+    }
+});

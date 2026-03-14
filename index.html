@@ -77,6 +77,7 @@
 						<button class="success" onclick="nextCard(1)">◀ Trước</button>
 						<button class="primary" id="toggleBtn" onclick="toggleMeaning()">Hiện nghĩa</button>
 						<button class="success" onclick="nextCard(0)">Tiếp ▶</button>
+						<button class="star-btn" id="starBtn" onclick="toggleStar()">☆ Chưa thuộc</button>
 					</div>
 
 					<div class="autorun-controls">
@@ -90,6 +91,9 @@
 						</label>
 						<label class="flashcard-option">
 							<input type="checkbox" id="showKanjiToggle" class="form-check-input"> 🈳 Hiện Kanji
+						</label>
+						<label class="flashcard-option">
+							<input type="checkbox" id="starOnlyToggle" class="form-check-input"> ⭐ Ôn từ chưa thuộc <span id="starCount" class="star-count"></span>
 						</label>
 						<label class="flashcard-option">
 							<input type="checkbox" id="autoRunToggle" class="form-check-input"> 🔄 Tự động chạy

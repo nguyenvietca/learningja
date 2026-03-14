@@ -186,6 +186,50 @@ button {
     margin-top: 10px;
 }
 
+/* Star button */
+.star-btn {
+    background: #f0f0f0;
+    color: #555;
+    border: 1.5px solid #ccc;
+    font-size: 13px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.star-btn.starred {
+    background: #fff3cd;
+    color: #c8820a;
+    border-color: #f5c842;
+    font-weight: 600;
+}
+.star-btn:hover {
+    background: #ffe9a0;
+    border-color: #f5c842;
+    color: #a86a00;
+}
+
+/* Badge số từ chưa thuộc */
+.star-count {
+    display: inline-block;
+    background: #f5c842;
+    color: #7a4e00;
+    border-radius: 10px;
+    padding: 0 6px;
+    font-size: 11px;
+    font-weight: 700;
+    margin-left: 2px;
+    vertical-align: middle;
+}
+
+/* Flashcard swipe hint cursor */
+.flashcard {
+    cursor: grab;
+}
+.flashcard:active {
+    cursor: grabbing;
+}
+
 .flashcard-option {
     display: inline-flex;
     align-items: center;
